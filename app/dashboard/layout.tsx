@@ -121,12 +121,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-gray-50">
+      <div className="flex w-[100%] bg-gray-50">
         <Sidebar>
           <SidebarHeader className="border-b">
             <div className="flex items-center gap-2 px-4 py-2">
               <Truck className="h-6 w-6 text-blue-600" />
-              <span className="text-lg font-bold">LogiTrack</span>
+              <span className="text-lg font-bold">MapFleet</span>
             </div>
           </SidebarHeader>
           <SidebarContent>
