@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
@@ -16,6 +16,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { firebaseConfig } from "@/lib/firebase-config"
 import { Package, ArrowRight } from "lucide-react"
 
+// Add Razorpay to window object type
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore(app)
@@ -24,6 +31,7 @@ export default function CreateShipment() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [paymentDone, setPaymentDone] = useState(false) // Track payment status
   const [formData, setFormData] = useState({
     packageName: "",
     packageDescription: "",
@@ -38,6 +46,13 @@ export default function CreateShipment() {
     deliverySpeed: "standard",
   })
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -47,8 +62,58 @@ export default function CreateShipment() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handlePayment = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window.Razorpay === "undefined") {
+      setError("Razorpay SDK not loaded. Please try again later.");
+      return;
+    }
+
+    try {
+      const options = {
+        key: "rzp_test_LKzUHlKc5BACvO", // Replace with your Razorpay test key
+        amount: 50000, // Amount in paise (₹500)
+        currency: "INR",
+        name: "Logistics Dashboard",
+        description: "Shipment Payment",
+        handler: function (response: any) {
+          console.log("Payment successful:", response);
+          setPaymentDone(true);
+          alert("Payment successful!");
+        },
+        prefill: {
+          name: formData.recipientName,
+          email: formData.recipientEmail,
+          contact: formData.recipientPhone,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+        modal: {
+          ondismiss: function () {
+            console.log("Payment popup closed.");
+          },
+        },
+        error: function (response: any) {
+          console.error("Payment failed:", response);
+          alert("Payment failed. Please try again.");
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error: any) {
+      setError(error.message || "Payment failed. Please try again.");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!paymentDone) {
+      setError("Please complete the payment before submitting the form.")
+      return
+    }
+
     setLoading(true)
     setError("")
 
@@ -271,7 +336,10 @@ export default function CreateShipment() {
           <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type="submit" disabled={loading} className="gap-2">
+          <Button type="button" onClick={handlePayment} className="gap-2">
+            Pay ₹500
+          </Button>
+          <Button type="submit" disabled={loading || !paymentDone} className="gap-2">
             {loading ? "Creating..." : "Create Shipment"}
             {!loading && <ArrowRight className="h-4 w-4" />}
           </Button>
