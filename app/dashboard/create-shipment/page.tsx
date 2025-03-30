@@ -15,6 +15,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { firebaseConfig } from "@/lib/firebase-config"
 import { Package, ArrowRight } from "lucide-react"
+import RazorpayButton from "@/components/RazorpayButton";
+import RazorpayPaymentForm from "@/components/RazorpayButton"
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
@@ -267,15 +269,15 @@ export default function CreateShipment() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={loading} className="gap-2">
-            {loading ? "Creating..." : "Create Shipment"}
-            {!loading && <ArrowRight className="h-4 w-4" />}
-          </Button>
-        </CardFooter>
+        <CardFooter className="flex justify-between items-center">
+  <Button type="button" variant="outline" onClick={() => router.back()}>
+    Cancel
+  </Button>
+  <div className="flex items-center justify-center">
+    <RazorpayPaymentForm />
+  </div>
+</CardFooter>
+
       </form>
     </Card>
   )
