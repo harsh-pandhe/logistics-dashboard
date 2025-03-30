@@ -18,7 +18,6 @@ import { Package, ArrowRight } from "lucide-react"
 import RazorpayButton from "@/components/RazorpayButton";
 import RazorpayPaymentForm from "@/components/RazorpayButton"
 
-// Add Razorpay to window object type
 declare global {
   interface Window {
     Razorpay: any;
@@ -33,7 +32,7 @@ export default function CreateShipment() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [paymentDone, setPaymentDone] = useState(false) // Track payment status
+  const [paymentDone, setPaymentDone] = useState(false)
   const [formData, setFormData] = useState({
     packageName: "",
     packageDescription: "",
@@ -73,8 +72,8 @@ export default function CreateShipment() {
 
     try {
       const options = {
-        key: "rzp_test_LKzUHlKc5BACvO", // Replace with your Razorpay test key
-        amount: 50000, // Amount in paise (₹500)
+        key: "rzp_test_LKzUHlKc5BACvO", 
+        amount: 50000,
         currency: "INR",
         name: "Logistics Dashboard",
         description: "Shipment Payment",
