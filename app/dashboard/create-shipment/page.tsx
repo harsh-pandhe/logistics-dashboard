@@ -15,6 +15,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { firebaseConfig } from "@/lib/firebase-config"
 import { Package, ArrowRight } from "lucide-react"
+import RazorpayButton from "@/components/RazorpayButton";
+import RazorpayPaymentForm from "@/components/RazorpayButton"
 
 // Add Razorpay to window object type
 declare global {
