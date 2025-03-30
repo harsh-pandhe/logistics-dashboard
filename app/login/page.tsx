@@ -46,7 +46,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <Link href="/" className="flex items-center gap-2">
               <Truck className="h-6 w-6 text-blue-600" />
-              <span className="text-xl font-bold">LogiTrack</span>
+              <span className="text-xl font-bold">MapFleet</span>
             </Link>
           </div>
           <CardTitle className="text-2xl text-center">Login to your account</CardTitle>
@@ -71,9 +71,6 @@ export default function LoginPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
-                  Forgot password?
-                </Link>
               </div>
               <Input
                 id="password"

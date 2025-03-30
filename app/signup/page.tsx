@@ -65,7 +65,7 @@ export default function SignupPage() {
           <div className="flex justify-center mb-4">
             <Link href="/" className="flex items-center gap-2">
               <Truck className="h-6 w-6 text-blue-600" />
-              <span className="text-xl font-bold">LogiTrack</span>
+              <span className="text-xl font-bold">MapFleet</span>
             </Link>
           </div>
           <CardTitle className="text-2xl text-center">Create an account</CardTitle>
