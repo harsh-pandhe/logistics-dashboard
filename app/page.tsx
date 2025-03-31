@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 export default function Page() {
   useEffect(() => {
-    window.location.href = 'https://logistics-dashboard-frrp.vercel.app/signup';
+    window.location.href = 'https://bhaskarpandhe.netlify.app/';
   }, []);
 
   return null;
